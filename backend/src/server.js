@@ -13,9 +13,9 @@ loadData();
 const PORT = parseInt(process.env.PORT || config.port);
 const HOST = process.env.IP || 'localhost';
 
-// API Endpoints 
-app.get('/data', (req, res) => {
-  res.json(['Example 1', 'Example 2'])
+// API Endpoints
+app.post('/auth/register', (req, res) => {
+
 })
 
 const server = app.listen(PORT, HOST, () => {

@@ -1,6 +1,8 @@
 import fs from 'fs';
 
-let data = {};
+let data = {
+  users: []
+};
 
 export const getData = () => data;
 export const setData = (newData) => {
@@ -8,6 +10,11 @@ export const setData = (newData) => {
 
   const jsonStr = JSON.stringify(newData);
   fs.writeFileSync('./data.json', jsonStr);
+}
+
+export const getUsers = () => data.users;
+export const addUser = (user) => {
+  data.users.push(user);
 }
 
 export const loadData = () => {

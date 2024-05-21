@@ -1,11 +1,12 @@
 import fs from 'fs';
+import { data, user } from './interface'
 
-let data = {
+let data: data = {
   users: []
 };
 
 export const getData = () => data;
-export const setData = (newData) => {
+export const setData = (newData: data) => {
   data = newData;
 
   const jsonStr = JSON.stringify(newData);
@@ -13,7 +14,7 @@ export const setData = (newData) => {
 }
 
 export const getUsers = () => data.users;
-export const addUser = (user) => {
+export const addUser = (user: user) => {
   data.users.push(user);
 }
 

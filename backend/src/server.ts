@@ -1,4 +1,4 @@
-import config from './config.json' assert { type: "json" };
+import config from './config.json';
 import express, { json } from 'express';
 import cors from 'cors';
 

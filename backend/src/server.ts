@@ -2,8 +2,8 @@ import config from './config.json';
 import express, { json } from 'express';
 import cors from 'cors';
 
-import { loadData } from './datastore.js';
-import { authRegister } from './auth/auth.js';
+import { loadData } from './datastore';
+import { authRegister } from './auth/auth';
 
 const app = express();
 app.use(json());

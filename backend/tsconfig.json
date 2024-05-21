@@ -6,7 +6,9 @@
     "resolveJsonModule": true,
     "allowJs": true,
     "ignoreDeprecations": "5.0",
-    "suppressImplicitAnyIndexErrors": true
+    "suppressImplicitAnyIndexErrors": true,
+    "strict": true,
+    "noImplicitReturns": true,
   },
   "exclude": [
     "**/**_broken.ts"

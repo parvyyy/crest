@@ -2,7 +2,8 @@ import config from './config.json' assert { type: "json" };
 import express, { json } from 'express';
 import cors from 'cors';
 
-import { loadData } from './datastore';
+import { loadData } from './datastore.js';
+import { authRegister } from './auth/auth.js';
 
 const app = express();
 app.use(json());
@@ -15,7 +16,8 @@ const HOST = process.env.IP || 'localhost';
 
 // API Endpoints
 app.post('/auth/register', (req, res) => {
-
+  const { email, name, password } = req.body;
+  res.json(authRegister(email, name, password));
 })
 
 const server = app.listen(PORT, HOST, () => {

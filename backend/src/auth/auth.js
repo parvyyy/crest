@@ -1,10 +1,10 @@
-import isEmail from 'validator/es/lib/isEmail';
+import validator from 'validator';
 import { v4 as uuidv4 } from 'uuid';
 import HTTPError from 'http-errors';
-import { getUsers, getData, setData } from '../datastore';
+import { getUsers, getData, setData } from '../datastore.js';
 
 export const authRegister = (email, name, password) => {
-  if (!isEmail(email)) {
+  if (!validator.isEmail(email)) {
     throw HTTPError(400, 'The email entered is invalid.')
   }
 

@@ -1,10 +1,13 @@
 import React from 'react';
 import axios from 'axios';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
-import { TextInput, Button, Label } from "flowbite-react";
+import { TextInput, Button, Label, Alert } from "flowbite-react";
 import { HiUser, HiMail, HiLockClosed } from 'react-icons/hi';
 
+import { TokenContext } from '../App';
+
 const Register  = () => {
+  const { token, updateToken } = React.useContext(TokenContext)
   const navigate = useNavigate();
 
   const [email, setEmail] = React.useState('');
@@ -12,7 +15,7 @@ const Register  = () => {
   const [confirmedPassword, setConfirmedPassword] = React.useState('');
   const [name, setName] = React.useState('')
 
-  const [errors, setErrors] = React.useState(null);
+  const [error, setError] = React.useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,10 +25,11 @@ const Register  = () => {
     const registerBody = { email, password, name };
 
     try {
-      const resp = await axios.post('http://localhost:5000/auth/register', registerBody);      
+      const resp = await axios.post('http://localhost:5000/auth/register', registerBody);
+      updateToken(resp.token)
       navigate('/dashboard');
     } catch (error) {
-      setErrors('An error occurred while registering.');
+      setError('An error occurred while registering.');
     }
 
     return;
@@ -33,6 +37,13 @@ const Register  = () => {
 
   return (
     <div className='flex flex-col justify-center items-center h-screen'>
+      {token && <Navigate to='/dashboard' replace={true} />}
+      {error && (
+        <Alert color='failure' onDismiss={() => setError(null)}>
+          <span className='font-medium'>{error}</span>
+        </Alert>
+      )}
+
       <form 
         className='flex flex-col gap-6 w-full max-w-xl px-4 py-8'
         onSubmit={handleSubmit}

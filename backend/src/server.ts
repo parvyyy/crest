@@ -1,8 +1,9 @@
-import config from './config.json' assert { type: "json" };
+import config from './config.json';
 import express, { json } from 'express';
 import cors from 'cors';
 
 import { loadData } from './datastore';
+import { authRegister } from './auth/auth';
 
 const app = express();
 app.use(json());
@@ -13,9 +14,10 @@ loadData();
 const PORT = parseInt(process.env.PORT || config.port);
 const HOST = process.env.IP || 'localhost';
 
-// API Endpoints 
-app.get('/data', (req, res) => {
-  res.json(['Example 1', 'Example 2'])
+// API Endpoints
+app.post('/auth/register', (req, res) => {
+  const { email, name, password } = req.body;
+  res.json(authRegister(email, name, password));
 })
 
 const server = app.listen(PORT, HOST, () => {

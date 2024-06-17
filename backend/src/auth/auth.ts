@@ -41,5 +41,5 @@ const isValidPassword = (pass: string) => pass.length > 6 && pass.length < 50;
 const isAvailableEmail = (email: string): boolean => {
   const users = getUsers();
   
-  return users.some((u: user) => u.email === email);
+  return !(users.some((u: user) => u.email === email));
 }

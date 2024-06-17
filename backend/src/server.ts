@@ -1,6 +1,7 @@
 import config from './config.json';
 import express, { json } from 'express';
 import cors from 'cors';
+import errorHandler from './middleware';
 
 import { loadData } from './datastore';
 import { authRegister } from './auth/auth';
@@ -19,6 +20,9 @@ app.post('/auth/register', (req, res) => {
   const { email, name, password } = req.body;
   res.json(authRegister(email, name, password));
 })
+
+// Middleware must exist AFTER all API endpoints.
+app.use(errorHandler());
 
 const server = app.listen(PORT, HOST, () => {
   console.log(`⚡️ Server started on port ${PORT} at ${HOST}`);

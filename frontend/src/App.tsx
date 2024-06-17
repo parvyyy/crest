@@ -1,15 +1,20 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import Register from './pages/Register';
+import Register from './pages/Register.tsx';
 
 import './index.css';
 
-export const TokenContext = React.createContext(null);
+type TokenManager = {
+  token: string,
+  updateToken : (token: string) => void
+}
+
+export const TokenContext = React.createContext<TokenManager | null>(null);
 
 function App() {
   const [token, setToken] = React.useState('')
-  const updateToken = (tok) => {
+  const updateToken = (tok: string) => {
     setToken(tok)
     localStorage.setItem('token', tok)
 
@@ -20,8 +25,9 @@ function App() {
 
   // On startup, registers token
   React.useEffect(() => {
-    if (localStorage.getItem('token')) {
-      setToken(localStorage.getItem('token'));
+    const tok = localStorage.getItem('token')
+    if (tok) {
+      setToken(tok);
     }
   }, []);
 
@@ -29,7 +35,7 @@ function App() {
     <TokenContext.Provider value = {{ token, updateToken }}>
       <BrowserRouter>
         <Routes>
-          <Route path='/' element={<></>} />
+          <Route path='/' element={<>It is working</>} />
           <Route path='/register' element={<Register />} />
         </Routes>
       </BrowserRouter>

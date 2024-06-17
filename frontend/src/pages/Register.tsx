@@ -1,23 +1,29 @@
 import React from 'react';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { TextInput, Button, Label, Alert } from "flowbite-react";
 import { HiUser, HiMail, HiLockClosed } from 'react-icons/hi';
 
-import { TokenContext } from '../App';
+import { TokenContext } from '../App.tsx';
 
 const Register  = () => {
-  const { token, updateToken } = React.useContext(TokenContext)
   const navigate = useNavigate();
+
+  const tokManager = React.useContext(TokenContext);
+  if (!tokManager) {
+    throw new Error("Must be within a valid TokenProvider")
+  }
+  
+  const { token, updateToken } = tokManager;
 
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [confirmedPassword, setConfirmedPassword] = React.useState('');
   const [name, setName] = React.useState('')
 
-  const [error, setError] = React.useState(null);
+  const [error, setError] = React.useState("");
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     e.stopPropagation();
 
@@ -26,10 +32,12 @@ const Register  = () => {
 
     try {
       const resp = await axios.post('http://localhost:5000/auth/register', registerBody);
-      updateToken(resp.token)
+      console.log(resp)
+      updateToken(resp.data.token)
       navigate('/dashboard');
     } catch (error) {
-      setError('An error occurred while registering.');
+      console.log(error)
+      setError(error.response.data.error);
     }
 
     return;
@@ -37,9 +45,9 @@ const Register  = () => {
 
   return (
     <div className='flex flex-col justify-center items-center h-screen'>
-      {token && <Navigate to='/dashboard' replace={true} />}
+      {/* {token && <Navigate to='/dashboard' replace={true} />} */}
       {error && (
-        <Alert color='failure' onDismiss={() => setError(null)}>
+        <Alert color='failure' onDismiss={() => setError("")}>
           <span className='font-medium'>{error}</span>
         </Alert>
       )}
